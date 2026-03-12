@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 50% 98%;
+    --foreground: 220 50% 10%;
+    --primary: 220 50% 10%;
+    --primary-foreground: 220 50% 98%;
+  }
+}
+
+/* Base styles to be overridden by accessibility toggle classes */
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: inherit;
+}
+
+/* =========================================
+   Accessibility Settings (From Specification)
+   ========================================= */
+
+/* Dyslexia font — assuming font is added to public/fonts/ */
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('/fonts/OpenDyslexic-Regular.otf');
+  font-display: swap;
+}
+
+html.dyslexia-font * {
+  font-family: 'OpenDyslexic', sans-serif !important;
+  letter-spacing: 0.05em;
+  line-height: 1.8;
+  word-spacing: 0.1em;
+}
+
+/* High Contrast Mode */
+html.high-contrast {
+  filter: contrast(150%);
+  background: #000 !important;
+}
+
+html.high-contrast * {
+  background-color: #000 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+
+/* Text Size Control */
+html.text-large * { font-size: 1.1em !important; }
+html.text-xl * { font-size: 1.25em !important; }
+
+/* 
+  ========================================
+  ACCESSIBILITY OVERRIDES (Phase 6)
+  ========================================
+*/
+
+/* 1. Dyslexia Font (OpenDyslexic fallback to Comic Sans) */
+body.font-dyslexic {
+  font-family: "OpenDyslexic", "Comic Sans MS", "Comic Sans", cursive, sans-serif !important;
+  letter-spacing: 0.05em !important;
+  word-spacing: 0.1em !important;
+  line-height: 1.6 !important;
+}
+
+/* 2. Text Scaling */
+body.text-large {
+  font-size: 115% !important; /* Scale base rem */
+}
+body.text-xlarge {
+  font-size: 130% !important; /* Scale base rem */
+}
+
+/* 3. High Contrast Mode (WCAG AAA aiming) */
+body.high-contrast {
+  --background: 0 0% 0%; /* Pure Black */
+  --foreground: 60 100% 50%; /* Pure Yellow */
+  --card: 0 0% 0%;
+  --card-foreground: 60 100% 50%;
+  --popover: 0 0% 0%;
+  --popover-foreground: 60 100% 50%;
+  --primary: 60 100% 50%;
+  --primary-foreground: 0 0% 0%;
+  --secondary: 0 0% 15%;
+  --secondary-foreground: 60 100% 50%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 60 100% 80%;
+  --accent: 60 100% 50%;
+  --accent-foreground: 0 0% 0%;
+  --border: 60 100% 50%;
+  
+  /* Hard reset on all text/bg elements to ensure safety */
+  background-color: black !important;
+  color: yellow !important;
+  border-color: yellow !important;
+}
+
+body.high-contrast * {
+  border-color: yellow !important;
+}
+
+body.high-contrast a {
+  text-decoration: underline !important;
+  text-underline-offset: 4px;
+  font-weight: bold;
+}

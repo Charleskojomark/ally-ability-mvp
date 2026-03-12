@@ -1,0 +1,6 @@
+{
+    "name": "@ally-ability/database",
+    "version": "0.1.0",
+    "private": true,
+    "description": "Supabase schema, migrations, and seed data for the Ally-Ability Network"
+}
