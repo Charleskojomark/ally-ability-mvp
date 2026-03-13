@@ -5,7 +5,7 @@ import { headers } from 'next/headers';
 import { createClient } from '@/lib/supabase-server';
 
 export async function register(formData: FormData) {
-    const origin = headers().get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const origin = process.env.NEXT_PUBLIC_APP_URL || headers().get('origin') || 'http://localhost:3000';
     const supabase = createClient();
 
     const email = formData.get('email') as string;
