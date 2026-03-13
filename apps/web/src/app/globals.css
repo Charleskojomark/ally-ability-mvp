@@ -4,25 +4,83 @@
 
 @layer base {
   :root {
-    --background: 220 50% 98%;
-    --foreground: 220 50% 10%;
-    --primary: 220 50% 10%;
-    --primary-foreground: 220 50% 98%;
+    --background: 240 20% 98%;
+    --foreground: 224 71% 4%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 71% 4%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+    --primary: 239 84% 67%;
+    --primary-foreground: 0 0% 100%;
+    --accent: 38 92% 50%;
+    --accent-foreground: 0 0% 100%;
+    --border: 220 13% 91%;
+    --ring: 239 84% 67%;
+    --radius: 0.75rem;
+  }
+
+  * {
+    border-color: hsl(var(--border));
   }
 }
 
-/* Base styles to be overridden by accessibility toggle classes */
+/* Base body styles */
 body {
-  background-color: hsl(var(--background));
+  background: linear-gradient(135deg, hsl(240, 20%, 98%) 0%, hsl(240, 30%, 96%) 100%);
   color: hsl(var(--foreground));
   font-family: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Glassmorphism utility */
+@layer utilities {
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .glass-dark {
+    background: rgba(30, 30, 60, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .gradient-primary {
+    background: linear-gradient(135deg, #6366f1 0%, #818cf8 50%, #a78bfa 100%);
+  }
+
+  .gradient-warm {
+    background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  }
+
+  .gradient-hero {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 30%, #4338ca 60%, #6366f1 100%);
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #6366f1, #a78bfa, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .shadow-glow {
+    box-shadow: 0 0 40px rgba(99, 102, 241, 0.15);
+  }
+
+  .shadow-glow-accent {
+    box-shadow: 0 0 40px rgba(245, 158, 11, 0.15);
+  }
 }
 
 /* =========================================
-   Accessibility Settings (From Specification)
+   Accessibility Settings
    ========================================= */
 
-/* Dyslexia font — assuming font is added to public/fonts/ */
 @font-face {
   font-family: 'OpenDyslexic';
   src: url('/fonts/OpenDyslexic-Regular.otf');
@@ -36,7 +94,6 @@ html.dyslexia-font * {
   word-spacing: 0.1em;
 }
 
-/* High Contrast Mode */
 html.high-contrast {
   filter: contrast(150%);
   background: #000 !important;
@@ -48,51 +105,35 @@ html.high-contrast * {
   border-color: #fff !important;
 }
 
-/* Text Size Control */
-html.text-large * { font-size: 1.1em !important; }
-html.text-xl * { font-size: 1.25em !important; }
+html.text-large * {
+  font-size: 1.1em !important;
+}
 
-/* 
-  ========================================
-  ACCESSIBILITY OVERRIDES (Phase 6)
-  ========================================
-*/
+html.text-xl * {
+  font-size: 1.25em !important;
+}
 
-/* 1. Dyslexia Font (OpenDyslexic fallback to Comic Sans) */
 body.font-dyslexic {
-  font-family: "OpenDyslexic", "Comic Sans MS", "Comic Sans", cursive, sans-serif !important;
+  font-family: "OpenDyslexic", "Comic Sans MS", cursive, sans-serif !important;
   letter-spacing: 0.05em !important;
   word-spacing: 0.1em !important;
   line-height: 1.6 !important;
 }
 
-/* 2. Text Scaling */
 body.text-large {
-  font-size: 115% !important; /* Scale base rem */
-}
-body.text-xlarge {
-  font-size: 130% !important; /* Scale base rem */
+  font-size: 115% !important;
 }
 
-/* 3. High Contrast Mode (WCAG AAA aiming) */
+body.text-xlarge {
+  font-size: 130% !important;
+}
+
 body.high-contrast {
-  --background: 0 0% 0%; /* Pure Black */
-  --foreground: 60 100% 50%; /* Pure Yellow */
-  --card: 0 0% 0%;
-  --card-foreground: 60 100% 50%;
-  --popover: 0 0% 0%;
-  --popover-foreground: 60 100% 50%;
+  --background: 0 0% 0%;
+  --foreground: 60 100% 50%;
   --primary: 60 100% 50%;
   --primary-foreground: 0 0% 0%;
-  --secondary: 0 0% 15%;
-  --secondary-foreground: 60 100% 50%;
-  --muted: 0 0% 15%;
-  --muted-foreground: 60 100% 80%;
-  --accent: 60 100% 50%;
-  --accent-foreground: 0 0% 0%;
   --border: 60 100% 50%;
-  
-  /* Hard reset on all text/bg elements to ensure safety */
   background-color: black !important;
   color: yellow !important;
   border-color: yellow !important;

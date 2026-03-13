@@ -6,8 +6,12 @@ import AccessibilityToolbar from '@/components/AccessibilityToolbar';
 import SafeSpaceButton from '@/components/SafeSpaceButton';
 import AllyChatbot from '@/components/AllyChatbot';
 import { createClient } from '@/lib/supabase-server';
+import Link from 'next/link';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+});
 
 import { Viewport } from 'next';
 
@@ -35,18 +39,67 @@ export default async function RootLayout({
   const { data: { session } } = await supabase.auth.getSession();
 
   return (
-    <html lang="en">
+    <html lang="en" className={inter.variable}>
       <AccessibilityProvider initialSession={session}>
         <body className={inter.className}>
-          <div className="min-h-screen bg-slate-50 flex flex-col">
-            {/* Top navigation placeholder */}
-            <header className="bg-white border-b border-slate-200 h-16 flex items-center px-6 sticky top-0 z-50">
-              <h1 className="text-xl font-bold text-slate-800">Ally-Ability Network</h1>
+          <div className="min-h-screen flex flex-col">
+            {/* Navigation */}
+            <header className="glass sticky top-0 z-50 border-b border-white/20">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                <Link href="/" className="flex items-center gap-2 group" id="nav-logo">
+                  <div className="w-9 h-9 rounded-xl gradient-primary flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                    <span className="text-white font-extrabold text-sm">A</span>
+                  </div>
+                  <span className="text-lg font-bold text-slate-800 hidden sm:block">
+                    Ally-Ability
+                  </span>
+                </Link>
+
+                <nav className="flex items-center gap-1 sm:gap-2">
+                  <Link href="/courses" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-primary-600 rounded-lg hover:bg-primary-50 transition-all" id="nav-courses">
+                    Courses
+                  </Link>
+                  <Link href="/champions" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-primary-600 rounded-lg hover:bg-primary-50 transition-all" id="nav-champions">
+                    Champions
+                  </Link>
+                  {session ? (
+                    <Link href="/home" className="ml-2 px-4 py-2 text-sm font-semibold text-white gradient-primary rounded-xl hover:shadow-lg hover:scale-105 transition-all" id="nav-dashboard">
+                      Dashboard
+                    </Link>
+                  ) : (
+                    <>
+                      <Link href="/login" className="ml-2 px-4 py-2 text-sm font-medium text-slate-700 border border-slate-200 rounded-xl hover:bg-white hover:shadow-sm transition-all" id="nav-login">
+                        Sign In
+                      </Link>
+                      <Link href="/register" className="px-4 py-2 text-sm font-semibold text-white gradient-primary rounded-xl hover:shadow-lg hover:scale-105 transition-all" id="nav-register">
+                        Get Started
+                      </Link>
+                    </>
+                  )}
+                </nav>
+              </div>
             </header>
 
-            <main className="flex-1 max-w-7xl w-full mx-auto p-6">
+            <main className="flex-1">
               {children}
             </main>
+
+            {/* Footer */}
+            <footer className="border-t border-slate-200/60 bg-white/50 py-8 mt-auto">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-lg gradient-primary flex items-center justify-center">
+                      <span className="text-white font-bold text-xs">A</span>
+                    </div>
+                    <span className="text-sm font-semibold text-slate-600">Ally-Ability Network</span>
+                  </div>
+                  <p className="text-xs text-slate-400">
+                    &copy; 2026 The Ally-Ability Network. Inclusive learning for all.
+                  </p>
+                </div>
+              </div>
+            </footer>
           </div>
           <AllyChatbot />
           <SafeSpaceButton />
