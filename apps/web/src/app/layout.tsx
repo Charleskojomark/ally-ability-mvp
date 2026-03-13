@@ -7,6 +7,7 @@ import SafeSpaceButton from '@/components/SafeSpaceButton';
 import AllyChatbot from '@/components/AllyChatbot';
 import { createClient } from '@/lib/supabase-server';
 import Link from 'next/link';
+import MobileNav from '@/components/MobileNav';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -46,7 +47,7 @@ export default async function RootLayout({
             {/* Navigation */}
             <header className="glass sticky top-0 z-50 border-b border-white/20">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-                <Link href="/" className="flex items-center gap-2 group" id="nav-logo">
+                <Link href="/" className="flex items-center gap-2 group shrink-0" id="nav-logo">
                   <div className="w-9 h-9 rounded-xl gradient-primary flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
                     <span className="text-white font-extrabold text-sm">A</span>
                   </div>
@@ -55,7 +56,8 @@ export default async function RootLayout({
                   </span>
                 </Link>
 
-                <nav className="flex items-center gap-1 sm:gap-2">
+                {/* Desktop Nav */}
+                <nav className="hidden md:flex items-center gap-2">
                   <Link href="/courses" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-primary-600 rounded-lg hover:bg-primary-50 transition-all" id="nav-courses">
                     Courses
                   </Link>
@@ -77,6 +79,9 @@ export default async function RootLayout({
                     </>
                   )}
                 </nav>
+
+                {/* Mobile Nav */}
+                <MobileNav isLoggedIn={!!session} />
               </div>
             </header>
 
@@ -85,9 +90,9 @@ export default async function RootLayout({
             </main>
 
             {/* Footer */}
-            <footer className="border-t border-slate-200/60 bg-white/50 py-8 mt-auto">
+            <footer className="border-t border-slate-200/60 bg-white/50 py-6 sm:py-8 mt-auto">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
                   <div className="flex items-center gap-2">
                     <div className="w-7 h-7 rounded-lg gradient-primary flex items-center justify-center">
                       <span className="text-white font-bold text-xs">A</span>

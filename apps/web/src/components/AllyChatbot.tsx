@@ -81,15 +81,15 @@ export default function AllyChatbot() {
         <>
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-6 right-6 z-[40] bg-primary text-primary-foreground p-4 rounded-full shadow-2xl hover:bg-primary/90 hover:-translate-y-1 transition-all flex items-center justify-center border-[3px] border-white ring-4 ring-primary/20"
+                className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[40] bg-primary text-primary-foreground p-3 sm:p-4 rounded-full shadow-2xl hover:bg-primary/90 hover:-translate-y-1 transition-all flex items-center justify-center border-2 sm:border-[3px] border-white ring-2 sm:ring-4 ring-primary/20"
                 aria-label="Ask Ally"
                 title="Chat with Ally (AI Assistant)"
             >
-                <Bot className="w-7 h-7" />
+                <Bot className="w-5 h-5 sm:w-7 sm:h-7" />
             </button>
 
             {isOpen && (
-                <div className="fixed bottom-24 right-6 z-[50] w-[350px] sm:w-[400px] h-[500px] max-h-[75vh] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 fade-in duration-200">
+                <div className="fixed bottom-0 right-0 sm:bottom-24 sm:right-6 z-[50] w-full sm:w-[400px] h-[100dvh] sm:h-[500px] sm:max-h-[75vh] bg-white sm:rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 fade-in duration-200">
 
                     {/* Header */}
                     <div className="bg-primary text-primary-foreground px-5 py-4 flex justify-between items-center shadow-sm">

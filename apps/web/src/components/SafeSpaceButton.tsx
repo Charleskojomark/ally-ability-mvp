@@ -11,7 +11,7 @@ export default function SafeSpaceButton() {
         <>
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-24 right-6 z-[40] bg-red-100 text-red-700 p-3.5 rounded-full shadow-lg hover:bg-red-200 hover:scale-105 transition-all flex items-center justify-center border-2 border-red-200"
+                className="fixed bottom-16 right-4 sm:bottom-24 sm:right-6 z-[40] bg-red-100 text-red-700 p-2.5 sm:p-3.5 rounded-full shadow-lg hover:bg-red-200 hover:scale-105 transition-all flex items-center justify-center border-2 border-red-200"
                 aria-label="Safe Space Report"
                 title="Report an issue or harassment"
             >

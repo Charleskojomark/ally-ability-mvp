@@ -38,3 +38,4 @@ whatsapp-session.json
 tmp/
 temp/
 *.tmp
+env

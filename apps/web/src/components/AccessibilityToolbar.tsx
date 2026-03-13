@@ -12,17 +12,17 @@ export default function AccessibilityToolbar() {
         return (
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-6 right-6 z-50 bg-primary text-primary-foreground p-4 rounded-full shadow-xl hover:scale-105 transition-transform flex items-center justify-center border-4 border-white"
+                className="fixed bottom-28 right-4 sm:bottom-6 sm:right-6 z-50 bg-primary text-primary-foreground p-2.5 sm:p-4 rounded-full shadow-xl hover:scale-105 transition-transform flex items-center justify-center border-2 sm:border-4 border-white"
                 aria-label="Open Accessibility Toolbar"
                 title="Accessibility Tools"
             >
-                <Settings className="w-6 h-6 animate-[spin_4s_linear_infinite]" />
+                <Settings className="w-4 h-4 sm:w-6 sm:h-6 animate-[spin_4s_linear_infinite]" />
             </button>
         );
     }
 
     return (
-        <div className="fixed bottom-6 right-6 z-50 w-80 bg-card border-2 shadow-2xl rounded-2xl overflow-hidden animate-in slide-in-from-bottom-5">
+        <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-[calc(100%-2rem)] sm:w-80 bg-card border-2 shadow-2xl rounded-2xl overflow-hidden animate-in slide-in-from-bottom-5">
             <div className="bg-slate-100 p-4 border-b flex justify-between items-center text-slate-800">
                 <h2 className="font-bold flex items-center gap-2">
                     <MonitorUp className="w-5 h-5 text-primary" />
