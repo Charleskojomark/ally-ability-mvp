@@ -1,12 +1,7 @@
 import { Router, Request, Response } from 'express';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '../lib/supabase';
 
 export const safetyRouter: Router = Router();
-
-const supabase = createClient(
-    process.env.SUPABASE_URL || '',
-    process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-);
 
 // Helper function to send email via Brevo API
 async function sendBrevoEmail(subject: string, htmlContent: string) {

@@ -1,79 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 240 20% 98%;
-    --foreground: 224 71% 4%;
-    --card: 0 0% 100%;
-    --card-foreground: 224 71% 4%;
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
-    --primary: 239 84% 67%;
-    --primary-foreground: 0 0% 100%;
-    --accent: 38 92% 50%;
-    --accent-foreground: 0 0% 100%;
-    --border: 220 13% 91%;
-    --ring: 239 84% 67%;
+    --background: #FDF8F0;
+    --foreground: #1A1A2E;
+    --card: #FFFFFF;
+    --card-foreground: #1A1A2E;
+    --muted: #F5EDE0;
+    --muted-foreground: #6B6B7B;
+    --primary: #E8820C;
+    --primary-foreground: #FFFFFF;
+    --secondary: #1B5E38;
+    --secondary-foreground: #FFFFFF;
+    --accent: #F5C842;
+    --accent-foreground: #1A1A2E;
+    --border: #E8DDD0;
+    --ring: #E8820C;
     --radius: 0.75rem;
+
+    --font-playfair: 'Playfair Display', Georgia, serif;
+    --font-source-serif: 'Source Serif 4', Georgia, serif;
+  }
+
+  .dark {
+    --background: #1A1A2E;
+    --foreground: #FDF8F0;
+    --card: #252540;
+    --card-foreground: #FDF8F0;
+    --muted: #2E2E48;
+    --muted-foreground: #A0A0B8;
+    --primary: #F09015;
+    --primary-foreground: #1A1A2E;
+    --secondary: #2D8F56;
+    --secondary-foreground: #FFFFFF;
+    --accent: #F5C842;
+    --accent-foreground: #1A1A2E;
+    --border: #3A3A52;
+    --ring: #F09015;
   }
 
   * {
-    border-color: hsl(var(--border));
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 }
 
 /* Base body styles */
 body {
-  background: linear-gradient(135deg, hsl(240, 20%, 98%) 0%, hsl(240, 30%, 96%) 100%);
-  color: hsl(var(--foreground));
-  font-family: inherit;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-source-serif);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.7;
 }
 
-/* Glassmorphism utility */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-playfair);
+  line-height: 1.2;
+}
+
+/* Utility classes */
 @layer utilities {
-  .glass {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+
+  /* Editorial Spacing */
+  .section-padding {
+    @apply py-16 sm:py-24 lg:py-32;
   }
 
-  .glass-dark {
-    background: rgba(30, 30, 60, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+  /* Warm Glass Effect */
+  .glass-warm {
+    background: rgba(253, 248, 240, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(232, 130, 12, 0.1);
   }
 
-  .gradient-primary {
-    background: linear-gradient(135deg, #6366f1 0%, #818cf8 50%, #a78bfa 100%);
+  .dark .glass-warm {
+    background: rgba(26, 26, 46, 0.9);
+    border-bottom-color: rgba(240, 144, 21, 0.15);
   }
 
+  /* Brand Gradients */
   .gradient-warm {
-    background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+    background: linear-gradient(135deg, #E8820C 0%, #F5C842 100%);
   }
 
   .gradient-hero {
-    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 30%, #4338ca 60%, #6366f1 100%);
+    background: linear-gradient(160deg, #FDF8F0 0%, #FEF3E2 40%, #FDE4BF 100%);
   }
 
-  .text-gradient {
-    background: linear-gradient(135deg, #6366f1, #a78bfa, #f59e0b);
+  .dark .gradient-hero {
+    background: linear-gradient(160deg, #1A1A2E 0%, #252540 40%, #2E2E48 100%);
+  }
+
+  .gradient-safe {
+    background: linear-gradient(160deg, #1A1A2E 0%, #151524 50%, #1B5E38 200%);
+  }
+
+  .text-gradient-warm {
+    background: linear-gradient(135deg, #E8820C, #F5C842);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  .shadow-glow {
-    box-shadow: 0 0 40px rgba(99, 102, 241, 0.15);
+  .text-gradient-green {
+    background: linear-gradient(135deg, #1B5E38, #2D8F56);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
-  .shadow-glow-accent {
-    box-shadow: 0 0 40px rgba(245, 158, 11, 0.15);
+  /* Card Styles */
+  .card-editorial {
+    @apply bg-white rounded-2xl border border-[#E8DDD0] shadow-sm;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card-editorial:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(232, 130, 12, 0.1);
+  }
+
+  .dark .card-editorial {
+    @apply bg-charcoal-50 border-charcoal-50;
+  }
+
+  .dark .card-editorial:hover {
+    box-shadow: 0 12px 40px rgba(240, 144, 21, 0.08);
+  }
+
+  /* Textile-Inspired Accents */
+  .border-textile {
+    border-image: repeating-linear-gradient(135deg,
+        #E8820C 0px,
+        #E8820C 4px,
+        #1B5E38 4px,
+        #1B5E38 8px,
+        #F5C842 8px,
+        #F5C842 12px) 4;
+  }
+
+  /* Focus Ring */
+  .focus-brand:focus-visible {
+    outline: 3px solid #E8820C;
+    outline-offset: 2px;
+    border-radius: var(--radius);
+  }
+
+  /* Tap Target */
+  .tap-target {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Shadow Glow */
+  .shadow-glow-amber {
+    box-shadow: 0 0 40px rgba(232, 130, 12, 0.12);
+  }
+
+  .shadow-glow-green {
+    box-shadow: 0 0 40px rgba(27, 94, 56, 0.12);
   }
 }
 
@@ -87,64 +187,42 @@ body {
   font-display: swap;
 }
 
-html.dyslexia-font * {
-  font-family: 'OpenDyslexic', sans-serif !important;
+html.dyslexia-font *,
+body.font-dyslexic * {
+  font-family: 'Atkinson Hyperlegible', 'OpenDyslexic', sans-serif !important;
   letter-spacing: 0.05em;
   line-height: 1.8;
   word-spacing: 0.1em;
 }
 
-html.high-contrast {
-  filter: contrast(150%);
-  background: #000 !important;
-}
-
-html.high-contrast * {
-  background-color: #000 !important;
-  color: #fff !important;
-  border-color: #fff !important;
-}
-
-html.text-large * {
-  font-size: 1.1em !important;
-}
-
-html.text-xl * {
-  font-size: 1.25em !important;
-}
-
-body.font-dyslexic {
-  font-family: "OpenDyslexic", "Comic Sans MS", cursive, sans-serif !important;
-  letter-spacing: 0.05em !important;
-  word-spacing: 0.1em !important;
-  line-height: 1.6 !important;
-}
-
-body.text-large {
-  font-size: 115% !important;
-}
-
-body.text-xlarge {
-  font-size: 130% !important;
-}
-
+html.high-contrast,
 body.high-contrast {
-  --background: 0 0% 0%;
-  --foreground: 60 100% 50%;
-  --primary: 60 100% 50%;
-  --primary-foreground: 0 0% 0%;
-  --border: 60 100% 50%;
-  background-color: black !important;
-  color: yellow !important;
-  border-color: yellow !important;
+  --background: #000000;
+  --foreground: #FFFF00;
+  --primary: #FFFF00;
+  --primary-foreground: #000000;
+  --border: #FFFF00;
 }
 
+html.high-contrast *,
 body.high-contrast * {
-  border-color: yellow !important;
+  background-color: #000 !important;
+  color: #FFFF00 !important;
+  border-color: #FFFF00 !important;
 }
 
 body.high-contrast a {
   text-decoration: underline !important;
   text-underline-offset: 4px;
   font-weight: bold;
+}
+
+html.text-large *,
+body.text-large * {
+  font-size: 1.1em !important;
+}
+
+html.text-xl *,
+body.text-xlarge * {
+  font-size: 1.25em !important;
 }

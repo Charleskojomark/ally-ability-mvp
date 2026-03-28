@@ -76,9 +76,12 @@ app.use((err: Error, _req: express.Request, res: express.Response, _next: expres
     res.status(500).json({ error: 'Internal server error' });
 });
 
-app.listen(PORT, () => {
-    console.log(`🚀 Ally-Ability API running on http://localhost:${PORT}`);
-    console.log(`   Health check: http://localhost:${PORT}/health`);
-});
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(PORT, () => {
+        console.log(`🚀 Ally-Ability API running on http://localhost:${PORT}`);
+        console.log(`   Health check: http://localhost:${PORT}/health`);
+    });
+}
 
 export default app;
+export { app };

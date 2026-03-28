@@ -11,7 +11,7 @@ export default function SafeSpaceButton() {
         <>
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-16 right-4 sm:bottom-24 sm:right-6 z-[40] bg-red-100 text-red-700 p-2.5 sm:p-3.5 rounded-full shadow-lg hover:bg-red-200 hover:scale-105 transition-all flex items-center justify-center border-2 border-red-200"
+                className="fixed bottom-16 right-4 sm:bottom-24 sm:right-6 z-[40] bg-brand-green/10 text-brand-green p-2.5 sm:p-3.5 rounded-full shadow-lg hover:bg-brand-green/20 hover:scale-105 transition-all flex items-center justify-center border-2 border-brand-green/20 animate-pulse-soft tap-target focus-brand"
                 aria-label="Safe Space Report"
                 title="Report an issue or harassment"
             >
@@ -19,13 +19,13 @@ export default function SafeSpaceButton() {
             </button>
 
             {isOpen && (
-                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in zoom-in-95 duration-200">
-                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[90vh]">
-                        <div className="px-4 py-3 border-b flex justify-between items-center bg-slate-50">
-                            <span className="font-bold text-sm text-slate-500 uppercase tracking-wider">Moderation Core</span>
+                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-charcoal/60 backdrop-blur-sm">
+                    <div className="bg-ivory rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[90vh]">
+                        <div className="px-4 py-3 border-b border-brand-green/10 flex justify-between items-center bg-brand-green/5">
+                            <span className="font-heading font-bold text-sm text-brand-green uppercase tracking-wider">🛡️ Safe Space</span>
                             <button
                                 onClick={() => setIsOpen(false)}
-                                className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-200 rounded-full transition-colors"
+                                className="p-1.5 text-charcoal/40 hover:text-charcoal hover:bg-charcoal/10 rounded-full transition-colors tap-target"
                             >
                                 <X className="w-5 h-5" />
                             </button>
