@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { login } from './actions';
 
 export default function LoginPage({ searchParams }: { searchParams: { message: string } }) {
@@ -6,14 +7,12 @@ export default function LoginPage({ searchParams }: { searchParams: { message: s
         <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-12">
             <div className="w-full max-w-md animate-fade-up">
                 {/* Card */}
-                <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-8 sm:p-10 border border-slate-100">
+                <div className="bg-white rounded-3xl shadow-xl shadow-charcoal/5 p-8 sm:p-10 border border-brand-amber/10">
                     {/* Header */}
                     <div className="text-center mb-8">
-                        <div className="w-14 h-14 rounded-2xl gradient-primary flex items-center justify-center mx-auto mb-4 shadow-lg">
-                            <span className="text-white font-extrabold text-xl">A</span>
-                        </div>
-                        <h1 className="text-2xl font-extrabold text-slate-900">Welcome Back</h1>
-                        <p className="text-slate-500 mt-1">Sign in to continue learning</p>
+                        <Image src="/logo.png" alt="Ally-Ability" width={56} height={56} className="mx-auto mb-4" />
+                        <h1 className="text-2xl font-heading font-bold text-charcoal">Welcome Back</h1>
+                        <p className="text-charcoal/60 font-body mt-1">Sign in to continue learning</p>
                     </div>
 
                     <form action={login} className="space-y-5">
@@ -48,7 +47,7 @@ export default function LoginPage({ searchParams }: { searchParams: { message: s
                         </div>
 
                         <button
-                            className="w-full gradient-primary text-white font-bold py-3.5 rounded-xl hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+                            className="w-full gradient-warm text-white font-bold py-3.5 rounded-xl hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
                             id="login-submit"
                         >
                             Sign In

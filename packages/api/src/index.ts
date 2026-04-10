@@ -1,3 +1,8 @@
+import * as crypto from 'crypto';
+if (!globalThis.crypto) {
+    // @ts-ignore
+    globalThis.crypto = crypto.webcrypto;
+}
 import express, { Application, Router } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';

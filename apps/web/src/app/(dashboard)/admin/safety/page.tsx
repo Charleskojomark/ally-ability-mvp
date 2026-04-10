@@ -1,12 +1,12 @@
 import { fetchApi } from '@/lib/api';
-import { createClient } from '@/lib/supabase-server';
+import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { ShieldAlert, Download, CheckCircle, Clock, AlertTriangle, User } from 'lucide-react';
 import ReportStatusDropdown from './ReportStatusDropdown';
 
 export default async function AdminSafetyPage() {
-    const supabase = createClient();
-    const { data: { session } } = await supabase.auth.getSession();
+    const sessionToken = await getSession();
+    const session = sessionToken ? { access_token: sessionToken } : null;
 
     if (!session) {
         redirect('/login');

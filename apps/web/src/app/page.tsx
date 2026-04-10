@@ -132,7 +132,7 @@ export default function LandingPage() {
               { title: 'Data Entry & Virtual Assistance', category: 'Remote Work', features: ['Captions', 'NSL', 'High Contrast'], color: 'border-brand-gold' },
               { title: 'Graphic Design with Canva', category: 'Creative', features: ['Captions', 'Read Aloud'], color: 'border-brand-amber' },
             ].map((course, i) => (
-              <div key={i} className={`card-editorial flex-shrink-0 w-80 snap-start p-6 border-t-4 ${course.color} opacity-0 animate-stagger-${i + 1}`}>
+              <div key={i} className={`card-editorial flex-shrink-0 w-80 snap-start p-6 border-t-4 ${course.color} animate-fade-up`} style={{ animationDelay: `${i * 0.1}s` }}>
                 <span className="inline-block px-3 py-1 rounded-full bg-ivory-200 text-xs font-body font-semibold text-charcoal/70 mb-4">
                   {course.category}
                 </span>
@@ -242,7 +242,7 @@ export default function LandingPage() {
               { name: 'Fatima Abdullahi', expertise: ['Digital Marketing', 'Content Creation'], available: true },
               { name: 'Chidinma Eze', expertise: ['Data Analysis', 'Remote Work'], available: false },
             ].map((mentor, i) => (
-              <div key={i} className={`card-editorial p-6 text-center opacity-0 animate-stagger-${i + 1}`}>
+              <div key={i} className="card-editorial p-6 text-center animate-fade-up" style={{ animationDelay: `${i * 0.1}s` }}>
                 {/* Avatar */}
                 <div className="relative w-20 h-20 mx-auto mb-4">
                   <div className="w-20 h-20 rounded-full bg-ivory-200 flex items-center justify-center text-2xl font-heading font-bold text-brand-amber border-2 border-brand-amber/20">
@@ -321,7 +321,7 @@ export default function LandingPage() {
               { title: 'Content Writer', company: 'Inclusive Media', tags: ['Remote', 'Nigeria', 'Part-time'], salary: '₦150k-₦250k' },
               { title: 'Virtual Assistant', company: 'GlobalAssist', tags: ['Remote', 'Flexible Hours'], salary: '₦100k-₦180k' },
             ].map((job, i) => (
-              <div key={i} className={`card-editorial p-6 opacity-0 animate-stagger-${i + 1}`}>
+              <div key={i} className="card-editorial p-6 animate-fade-up" style={{ animationDelay: `${i * 0.1}s` }}>
                 <h3 className="font-heading font-bold text-charcoal text-lg mb-1">{job.title}</h3>
                 <p className="text-sm text-charcoal/60 font-body mb-3">{job.company}</p>
                 <div className="flex flex-wrap gap-2 mb-4">

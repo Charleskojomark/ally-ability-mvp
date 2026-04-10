@@ -1,11 +1,11 @@
 import { fetchApi } from '@/lib/api';
 import EnrolButton from '@/components/EnrolButton';
 import Link from 'next/link';
-import { createClient } from '@/lib/supabase-server';
+import { getSession } from '@/lib/auth';
 
 export default async function CourseDetailPage({ params }: { params: { id: string } }) {
-    const supabase = createClient();
-    const { data: { session } } = await supabase.auth.getSession();
+    const sessionToken = await getSession();
+    const session = sessionToken ? { access_token: sessionToken } : null;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let course: any = null;

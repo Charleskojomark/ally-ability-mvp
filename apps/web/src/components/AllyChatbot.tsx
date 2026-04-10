@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Bot, X, Send, User } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/v1';
 
@@ -38,7 +37,13 @@ export default function AllyChatbot() {
 
         try {
             const payload = [...messages, { role: 'user', content: userMessage }];
-            const { data: { session } } = await supabase.auth.getSession();
+
+            const sessionRes = await fetch('/api/auth/session');
+            let session = null;
+            if (sessionRes.ok) {
+                const sessionData = await sessionRes.json();
+                session = sessionData.session;
+            }
 
             const headers: HeadersInit = {
                 'Content-Type': 'application/json'

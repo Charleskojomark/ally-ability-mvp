@@ -24,9 +24,7 @@ const defaultPreferences: AccessibilityPreferences = {
 
 const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined);
 
-import { Session } from '@supabase/supabase-js';
-
-export function AccessibilityProvider({ children, initialSession }: { children: React.ReactNode, initialSession?: Session | null }) {
+export function AccessibilityProvider({ children, initialSession }: { children: React.ReactNode, initialSession?: { access_token: string } | null }) {
     const [preferences, setPreferences] = useState<AccessibilityPreferences>(defaultPreferences);
     const [isLoading, setIsLoading] = useState(true);
 

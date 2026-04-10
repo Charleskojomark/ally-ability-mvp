@@ -12,7 +12,7 @@ export default function AccessibilityToolbar() {
         return (
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-28 right-4 sm:bottom-6 sm:right-6 z-50 bg-brand-amber text-white p-2.5 sm:p-4 rounded-full shadow-xl hover:scale-105 transition-transform flex items-center justify-center border-2 sm:border-4 border-white ring-2 sm:ring-4 ring-brand-amber/20 tap-target focus-brand"
+                className="fixed bottom-28 right-4 sm:bottom-6 sm:left-6 z-50 bg-brand-amber text-white p-2.5 sm:p-4 rounded-full shadow-xl hover:scale-105 transition-transform flex items-center justify-center border-2 sm:border-4 border-white ring-2 sm:ring-4 ring-brand-amber/20 tap-target focus-brand"
                 aria-label="Open Accessibility Toolbar"
                 title="Accessibility Tools"
             >

@@ -1,14 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
-import { createClient } from '@supabase/supabase-js';
+import { jwtVerify } from 'jose';
 
-// Initialize a Supabase client just for verifying tokens
-const supabase = createClient(
-    process.env.SUPABASE_URL || '',
-    process.env.SUPABASE_ANON_KEY || ''
-);
+const secretKey = process.env.JWT_SECRET || 'your-jwt-secret-change-in-production';
+const key = new TextEncoder().encode(secretKey);
 
 export interface AuthenticatedRequest extends Request {
-    user?: any;
+    user?: {
+        id: string;
+        email: string;
+        role: string;
+        [key: string]: any;
+    };
 }
 
 export const requireAuth = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
@@ -21,16 +23,14 @@ export const requireAuth = async (req: AuthenticatedRequest, res: Response, next
     const token = authHeader.split(' ')[1];
 
     try {
-        const { data: { user }, error } = await supabase.auth.getUser(token);
-
-        if (error || !user) {
-            return res.status(401).json({ error: 'Invalid or expired token', details: error?.message });
-        }
-
-        // Attach user to request
-        req.user = user;
+        const { payload } = await jwtVerify(token, key, { algorithms: ['HS256'] });
+        req.user = {
+            id: payload.sub as string,
+            email: payload.email as string,
+            role: payload.role as string
+        };
         next();
     } catch (err) {
-        return res.status(500).json({ error: 'Internal server error verifying token' });
+        return res.status(401).json({ error: 'Invalid or expired token', details: (err as Error).message });
     }
 };

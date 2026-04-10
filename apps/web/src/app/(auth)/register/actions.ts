@@ -1,36 +1,51 @@
 'use server'
 
 import { redirect } from 'next/navigation';
-import { headers } from 'next/headers';
-import { createClient } from '@/lib/supabase-server';
+import { db, users } from '@ally-ability/database';
+import { eq } from 'drizzle-orm';
+import { hash } from 'bcryptjs';
+import { signToken } from '@/lib/auth';
+import { cookies } from 'next/headers';
+import crypto from 'crypto';
 
 export async function register(formData: FormData) {
-    const origin = process.env.NEXT_PUBLIC_APP_URL || headers().get('origin') || 'http://localhost:3000';
-    const supabase = createClient();
-
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
     const full_name = formData.get('full_name') as string;
     const role = formData.get('role') as string;
     const disability_type = formData.get('disability_type') as string;
 
-    const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-            emailRedirectTo: `${origin}/auth/callback`,
-            data: {
-                full_name,
-                role,
-                disability_type
-            }
-        },
-    });
-
-    if (error) {
-        redirect(`/register?message=Could not sign up user: ${error.message}`);
+    // Check if user exists
+    const [existing] = await db.select().from(users).where(eq(users.email, email)).limit(1);
+    if (existing) {
+        redirect(`/register?message=Could not sign up user: Email already exists`);
     }
 
-    // Next.js actions should return redirect
-    return redirect('/login?message=Check email to continue sign in process. (Or just sign in if Email Confirmations are disabled directly in Supabase)');
+    // Hash password & generate ID
+    const password_hash = await hash(password, 10);
+    const userId = crypto.randomUUID();
+
+    try {
+        await db.insert(users).values({
+            id: userId,
+            email,
+            password_hash,
+            full_name,
+            role: role as any,
+            disability_type: disability_type as any
+        });
+    } catch (e: any) {
+        redirect(`/register?message=Could not sign up user: Database Error ${e.message}`);
+    }
+
+    // "Easy Sign Up" - Instantly log them in!
+    const token = await signToken({ sub: userId, email, role });
+    cookies().set('session', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/'
+    });
+
+    redirect('/home');
 }

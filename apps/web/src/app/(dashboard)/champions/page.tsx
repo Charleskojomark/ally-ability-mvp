@@ -1,13 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import { fetchApi } from '@/lib/api';
-import { createClient } from '@/lib/supabase-server';
+import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Star, Award, ShieldCheck } from 'lucide-react';
 
 export default async function ChampionsPage() {
-    const supabase = createClient();
-    const { data: { session } } = await supabase.auth.getSession();
+    const sessionToken = await getSession();
+    const session = sessionToken ? { access_token: sessionToken } : null;
 
     if (!session) {
         redirect('/login');

@@ -1,14 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import { fetchApi } from '@/lib/api';
-import { createClient } from '@/lib/supabase-server';
+import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Star, Calendar, MessageSquare, Clock, Globe } from 'lucide-react';
 import BookingForm from './BookingForm';
 
 export default async function ChampionProfilePage({ params }: { params: { id: string } }) {
-    const supabase = createClient();
-    const { data: { session } } = await supabase.auth.getSession();
+    const sessionToken = await getSession();
+    const session = sessionToken ? { access_token: sessionToken } : null;
 
     if (!session) {
         redirect('/login');

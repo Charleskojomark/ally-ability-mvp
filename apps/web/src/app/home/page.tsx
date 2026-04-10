@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { createClient } from '@/lib/supabase-server';
+import { getSession } from '@/lib/auth';
 
 export default async function HomeDashboard() {
-    const supabase = createClient();
-    const { data: { session } } = await supabase.auth.getSession();
+    const sessionToken = await getSession();
+    const session = sessionToken ? { access_token: sessionToken } : null;
     const name = session?.user?.user_metadata?.full_name || 'Learner';
 
     const cards = [

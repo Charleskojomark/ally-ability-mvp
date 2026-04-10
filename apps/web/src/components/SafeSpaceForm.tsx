@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { AlertTriangle, Info, CheckCircle2 } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/v1';
 
@@ -31,7 +30,12 @@ export default function SafeSpaceForm({ onCompletion }: SafeSpaceFormProps) {
             };
 
             // Get session for auth if they are logged in and not anonymous
-            const { data: { session } } = await supabase.auth.getSession();
+            const sessionRes = await fetch('/api/auth/session');
+            let session = null;
+            if (sessionRes.ok) {
+                const data = await sessionRes.json();
+                session = data.session;
+            }
 
             const headers: HeadersInit = {
                 'Content-Type': 'application/json'

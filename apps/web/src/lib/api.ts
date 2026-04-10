@@ -1,9 +1,9 @@
-import { createClient } from './supabase-server';
+import { getSession } from './auth';
 
 export async function fetchApi(endpoint: string, options: RequestInit = {}) {
     // Try to get the active session token to pass to the backend
-    const supabase = createClient();
-    const { data: { session } } = await supabase.auth.getSession();
+    const sessionToken = await getSession();
+    const session = sessionToken ? { access_token: sessionToken } : null;
 
     const headers = new Headers(options.headers || {});
     headers.set('Content-Type', 'application/json');

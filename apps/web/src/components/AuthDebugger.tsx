@@ -1,9 +1,9 @@
-import { createClient } from '@/lib/supabase-server';
+import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 
 export default async function AuthDebugger() {
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = null; // Removed auth debugger dependencies
 
     if (!user) {
         return (
@@ -23,8 +23,7 @@ export default async function AuthDebugger() {
             </ul>
             <form action={async () => {
                 'use server'
-                const supabase = createClient();
-                await supabase.auth.signOut();
+                await fetch('/api/auth/logout', { method: 'POST' });
                 redirect('/');
             }}>
                 <button className="mt-4 px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">Sign Out</button>

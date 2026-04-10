@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { supabase } from '@/lib/supabase';
 import { CheckCircle2, Calendar, FileText } from 'lucide-react';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/v1';
@@ -20,7 +19,12 @@ export default function BookingForm({ championId }: { championId: string }) {
         setErrorMsg('');
 
         try {
-            const { data: { session } } = await supabase.auth.getSession();
+            const sessionRes = await fetch('/api/auth/session');
+            let session = null;
+            if (sessionRes.ok) {
+                const data = await sessionRes.json();
+                session = data.session;
+            }
             if (!session) throw new Error('You must be logged in to book a session.');
 
             const res = await fetch(`${API_BASE_URL}/sessions`, {

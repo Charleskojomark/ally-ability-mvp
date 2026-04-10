@@ -1,44 +1,35 @@
 import { Router } from 'express';
-import { createClient } from '@supabase/supabase-js';
 import { requireAuth, AuthenticatedRequest } from '../middleware/auth';
+import { db, courses, users, modules, lessons } from '@ally-ability/database';
+import { eq, and, desc } from 'drizzle-orm';
 
 export const coursesRouter: Router = Router();
-
-// Initialize backend Supabase client (using service role for raw DB access, though RLS applies if user context passed)
-const supabase = createClient(
-    process.env.SUPABASE_URL || '',
-    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || ''
-);
 
 // GET /v1/courses
 coursesRouter.get('/', async (req, res) => {
     try {
         const { category, accessibility_level } = req.query;
 
-        let query = supabase
-            .from('courses')
-            .select('*, users!courses_created_by_fkey(full_name, avatar_url)')
-            .eq('status', 'published');
+        let conditions = [eq(courses.status, 'published')];
+        if (category) conditions.push(eq(courses.category, category as string));
+        if (accessibility_level) conditions.push(eq(courses.accessibility_level, accessibility_level as string));
 
-        if (category) {
-            query = query.eq('category', category);
-        }
+        const result = await db
+            .select({
+                course: courses,
+                author: { full_name: users.full_name, avatar_url: users.avatar_url }
+            })
+            .from(courses)
+            .leftJoin(users, eq(courses.created_by, users.id))
+            .where(and(...conditions))
+            .orderBy(desc(courses.created_at));
 
-        if (accessibility_level) {
-            query = query.eq('accessibility_level', accessibility_level);
-        }
+        const mapped = result.map(r => ({
+            ...r.course,
+            users: r.author
+        }));
 
-        // Order by newest first
-        query = query.order('created_at', { ascending: false });
-
-        const { data, error } = await query;
-
-        if (error) {
-            console.error('Database error fetching courses:', error);
-            return res.status(500).json({ error: 'Failed to fetch courses' });
-        }
-
-        res.json(data);
+        res.json(mapped);
     } catch (error) {
         console.error('Server error fetching courses:', error);
         res.status(500).json({ error: 'Internal server error' });
@@ -50,37 +41,37 @@ coursesRouter.get('/:id', async (req, res) => {
     try {
         const { id } = req.params;
 
-        // Fetch course with its modules and lessons
-        const { data: course, error } = await supabase
-            .from('courses')
-            .select(`
-        *,
-        users!courses_created_by_fkey(full_name, avatar_url),
-        modules (
-          *,
-          lessons (*)
-        )
-      `)
-            .eq('id', id)
-            .eq('status', 'published')
-            .single();
+        // Fetch course joined with user
+        const courseData = await db
+            .select({ course: courses, author: { full_name: users.full_name, avatar_url: users.avatar_url } })
+            .from(courses)
+            .leftJoin(users, eq(courses.created_by, users.id))
+            .where(and(eq(courses.id, id), eq(courses.status, 'published')))
+            .limit(1);
 
-        if (error) {
-            if (error.code === 'PGRST116') {
-                return res.status(404).json({ error: 'Course not found' });
-            }
-            return res.status(500).json({ error: 'Failed to fetch course details' });
+        if (courseData.length === 0) {
+            return res.status(404).json({ error: 'Course not found' });
         }
 
-        // Sort modules and lessons by order_index manually if needed
-        if (course && course.modules) {
-            course.modules.sort((a: any, b: any) => a.order_index - b.order_index);
-            course.modules.forEach((module: any) => {
-                if (module.lessons) {
-                    module.lessons.sort((a: any, b: any) => a.order_index - b.order_index);
-                }
-            });
-        }
+        const course = {
+            ...courseData[0].course,
+            users: courseData[0].author,
+            modules: [] as any[]
+        };
+
+        // Fetch modules for this course
+        const mods = await db.select().from(modules).where(eq(modules.course_id, id)).orderBy(modules.order_index);
+
+        // Fetch all lessons for these modules
+        const moduleIds = mods.map(m => m.id);
+        const less = moduleIds.length > 0 ? await Promise.all(
+            moduleIds.map(modId => db.select().from(lessons).where(eq(lessons.module_id, modId)).orderBy(lessons.order_index))
+        ) : [];
+
+        course.modules = mods.map((mod, i) => ({
+            ...mod,
+            lessons: less[i] || []
+        }));
 
         res.json(course);
     } catch (error) {

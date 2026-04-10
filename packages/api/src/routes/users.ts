@@ -1,13 +1,9 @@
 import { Router } from 'express';
-import { createClient } from '@supabase/supabase-js';
 import { requireAuth, AuthenticatedRequest } from '../middleware/auth';
+import { db, users } from '@ally-ability/database';
+import { eq } from 'drizzle-orm';
 
 export const usersRouter: Router = Router();
-
-const supabase = createClient(
-    process.env.SUPABASE_URL || '',
-    process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-);
 
 // GET /v1/users/preferences
 usersRouter.get('/preferences', requireAuth, async (req: AuthenticatedRequest, res) => {
@@ -18,16 +14,10 @@ usersRouter.get('/preferences', requireAuth, async (req: AuthenticatedRequest, r
             return res.status(401).json({ error: 'Unauthorized' });
         }
 
-        const { data, error } = await supabase
-            .from('users')
-            .select('preferences')
-            .eq('id', user_id)
-            .single();
-
-        if (error) throw error;
+        const [user] = await db.select({ accessibility_prefs: users.accessibility_prefs }).from(users).where(eq(users.id, user_id)).limit(1);
 
         // Default payload if preferences JSON is null in DB
-        const prefs = data?.preferences || {
+        const prefs = user?.accessibility_prefs ? JSON.parse(user.accessibility_prefs) : {
             highContrast: false,
             dyslexicFont: false,
             textSize: 'normal',
@@ -50,13 +40,7 @@ usersRouter.patch('/preferences', requireAuth, async (req: AuthenticatedRequest,
             return res.status(401).json({ error: 'Unauthorized' });
         }
 
-        // Upsert or merge into the JSONB column
-        const { error } = await supabase
-            .from('users')
-            .update({ preferences })
-            .eq('id', user_id);
-
-        if (error) throw error;
+        await db.update(users).set({ accessibility_prefs: JSON.stringify(preferences) }).where(eq(users.id, user_id));
 
         res.json({ message: 'Preferences updated successfully', preferences });
     } catch (error) {
